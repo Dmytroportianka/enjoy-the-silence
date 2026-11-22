@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>enjoy-the-silence — a software factory that starts itself</title>
+<meta property="og:title" content="enjoy-the-silence — a software factory that starts itself">
+<meta property="og:description" content="It stands itself up on a machine that isn't yours. State the work in one sentence, then watch the floor live or walk away.">
+<meta property="og:image" content="poster-factory.jpg">
+<meta name="description" content="It stands itself up on a machine that isn't yours: a rented VPS, a spare box, a throwaway container. State the work in one sentence, then watch the floor live or walk away.">
+<style>
+  :root{
+    --brick:#7c3626; --brick-dark:#5d2718; --iron:#211a15; --iron-2:#2b211a;
+    --paper:#efe3cb; --paper-dim:#cdbb9c; --brass:#c9962e; --brass-hi:#e8bd55;
+    --copper:#b06a35;
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; color:var(--paper); line-height:1.6;
+    font-family: Georgia, "Times New Roman", serif;
+    background:
+      repeating-linear-gradient(0deg, rgba(0,0,0,.16) 0 2px, transparent 2px 26px),
+      repeating-linear-gradient(90deg, rgba(0,0,0,.13) 0 2px, transparent 2px 64px),
+      linear-gradient(180deg, #6e3020 0%, #59301f 320px, #2a1d15 321px, #241a13 100%);
+    background-color:#241a13;
+  }
+  main { max-width:1060px; margin:0 auto; padding:0 20px 84px; }
+  /* mill facade band: rows of lit sash windows over brick */
+  .facade { margin:26px 0 0; border:3px solid #3a2415; outline:1px solid var(--brass);
+    background:
+      repeating-linear-gradient(90deg, transparent 0 54px, rgba(232,189,85,.28) 54px 58px, transparent 58px 112px),
+      repeating-linear-gradient(0deg, #8a4630 0 34px, #74402a 34px 38px),
+      #7c3626;
+    height:88px; position:relative; }
+  .facade::after { content:"EST. MMXXVI · MILL No. 6 · ENJOY-THE-SILENCE WORKS"; position:absolute; inset:auto 0 6px;
+    text-align:center; font-family:"Arial Narrow", "Franklin Gothic Medium", sans-serif; letter-spacing:4px;
+    font-size:12px; color:#f4d98c; text-shadow:0 1px 0 #000; }
+  .stack { width:64px; height:120px; margin-left:auto; margin-right:38px;
+    background:linear-gradient(90deg,#4c2415,#7c3a24 45%,#4c2415); border:2px solid #33190d; border-bottom:none; position:relative; }
+  .stack::before { content:""; position:absolute; top:-14px; left:6px; right:6px; height:14px;
+    background:radial-gradient(ellipse at center, rgba(239,227,203,.75), rgba(239,227,203,0) 68%); }
+  header { padding:34px 0 8px; text-align:left; }
+  .plate { display:inline-block; border:2px solid var(--brass); color:var(--brass-hi);
+    font-family:"Arial Narrow","Franklin Gothic Medium",sans-serif; letter-spacing:3px; font-size:12px;
+    padding:5px 12px; margin-bottom:16px; background:#1d140d;
+    box-shadow: inset 0 0 0 1px #000, 0 0 0 3px #1d140d; }
+  h1,h2,h3,.path h3 { font-family:"Arial Narrow","Franklin Gothic Medium","Helvetica Neue Condensed",sans-serif;
+    text-transform:uppercase; }
+  h1 { font-size:58px; line-height:.98; margin:0 0 14px; letter-spacing:1px; font-weight:700; color:var(--paper);
+    text-shadow:0 2px 0 #180d06; }
+  h1 .quiet { color:var(--brass-hi); }
+  .promise { font-size:20px; color:var(--paper-dim); max-width:740px; margin:0 0 24px; }
+  .actions a { display:inline-block; margin:0 10px 10px 0; padding:11px 18px; text-decoration:none; font-weight:700;
+    font-family:"Arial Narrow",sans-serif; letter-spacing:1.5px; text-transform:uppercase; font-size:14px;
+    color:var(--paper); border:2px solid var(--brass); background:#1d140d; }
+  .actions a.primary { background:linear-gradient(180deg,var(--brass-hi),var(--brass)); color:#241503; border-color:#8a6420; }
+  h2 { font-size:32px; letter-spacing:1.5px; margin:66px 0 8px; color:var(--brass-hi);
+    border-bottom:3px double var(--brass); padding-bottom:8px; }
+  h2 + p.sub { color:var(--paper-dim); margin:0 0 22px; max-width:780px; }
+  .gear { color:var(--brass); font-size:20px; margin-right:8px; }
+  .clip { margin:0 0 44px; background:var(--iron-2); border:1px solid #4c3a24; padding:18px 18px 12px;
+    box-shadow: inset 0 0 0 1px #140d07; }
+  .clip h3 { margin:0 0 4px; font-size:21px; letter-spacing:1px; color:var(--paper); }
+  .clip p { color:var(--paper-dim); margin:0 0 12px; max-width:780px; }
+  video { width:100%; background:#000; border:2px solid #120c07; outline:1px solid var(--brass); display:block; }
+  .flow { border-left:4px solid var(--copper); padding-left:22px; margin:26px 0; }
+  .flow div { margin:0 0 15px; position:relative; }
+  .flow div::before { content:""; position:absolute; left:-29px; top:7px; width:10px; height:10px; border-radius:50%;
+    background:radial-gradient(circle at 35% 35%, var(--brass-hi), #6e4d14); border:1px solid #2b1c08; }
+  .flow b { display:block; font-family:"Arial Narrow",sans-serif; letter-spacing:1px; text-transform:uppercase; }
+  .flow span { color:var(--paper-dim); }
+  .path { background:linear-gradient(180deg,#32241a,#281c13); border:1px solid #554026; padding:20px 22px; margin:0 0 14px;
+    position:relative; }
+  .path::before,.path::after { content:""; position:absolute; width:9px; height:9px; border-radius:50%;
+    background:radial-gradient(circle at 35% 35%, var(--brass-hi), #5d430f); top:9px; }
+  .path::before { left:9px; } .path::after { right:9px; }
+  .path h3 { margin:0 0 6px; font-size:20px; letter-spacing:1px; color:var(--brass-hi); }
+  .path p { color:var(--paper-dim); margin:0 0 10px; }
+  code, pre { font-family: ui-monospace, "Cascadia Code", Consolas, monospace; }
+  pre { background:#150f0a; border:1px solid #4c3a24; border-left:4px solid var(--brass);
+    padding:14px 16px; overflow-x:auto; font-size:13.5px; margin:8px 0; color:#e9dcbf; }
+  .path pre { margin-bottom:0; }
+  ul.why { padding-left:20px; }
+  ul.why li { margin:0 0 12px; max-width:840px; }
+  ul.why span { color:var(--paper-dim); }
+  footer { border-top:3px double var(--brass); margin-top:70px; padding-top:22px; color:var(--paper-dim); font-size:14px;
+    font-family:"Arial Narrow",sans-serif; letter-spacing:1px; }
+  a { color:var(--brass-hi); }
+  @media (max-width:640px){ h1{font-size:38px} .promise{font-size:18px} .facade{height:70px} }
+</style>
+</head>
+<body>
+<main>
+  <div class="facade" aria-hidden="true"></div>
+  <div class="stack" aria-hidden="true"></div>
+  <header>
+    <div class="plate">BRICK &amp; BRASS · MILL No. 6 · STEAM &amp; SILENCE</div>
+    <h1>enjoy-the-<span class="quiet">silence</span></h1>
+    <p class="promise">It stands itself up on a machine that isn't yours: a rented VPS, a spare box, a throwaway container. Your laptop is only a window. <strong>State the work in one sentence, then watch the floor live or walk away. The run is the same either way.</strong></p>
+    <p class="promise">Inside that box the crew runs at full power because the machine is built to be thrown away: work order → plan → red-teams → build → review → visual approval → delivery → run report.</p>
+    <p>
+      <img alt="CI status" src="badges/ci.svg"> <img alt="Coverage" src="badges/coverage.svg"> <img alt="Tests" src="badges/tests.svg"> <img alt="Complexity" src="badges/complexity.svg"> <img alt="Lint" src="badges/lint.svg">
+    </p>
+    <div class="actions">
+      <a class="primary" href="#watch">Watch it work</a>
+      <a href="https://github.com/Dmytroportianka/enjoy-the-silence">GitHub repository</a>
+      <a href="#paths">Ways to run it</a>
+    </div>
+  </header>
+
+  <h2 id="watch"><span class="gear">⚙</span>Watch it work</h2>
+  <p class="sub">Three short clips, filmed against the real control room with mocked model calls (no tokens spent). Station behaviour mirrors real factory runs. CI re-records them on every relevant push — the latest filming is always in the <a href="https://github.com/Dmytroportianka/enjoy-the-silence/actions/workflows/record-demos.yml">Record demos workflow artifacts</a>.</p>
+
+  <div class="clip">
+    <h3>1 · Create a feature from one sentence</h3>
+    <p>The owner states the work; a planner drafts the plan, two red-teams attack it, a builder implements it in an isolated worktree, two reviewers check the diff, and it lands.</p>
+    <video controls preload="none" poster="poster-factory.jpg" src="create-feature.webm"></video>
+  </div>
+  <div class="clip">
+    <h3>2 · Model presets: who builds, who checks</h3>
+    <p>Settings groups models into unlimited presets. With muse and agy installed, the factory suggests cross-family presets — Gemini writes the code, Muse checks it. Each group has switch rules: quota, failure rate, or provider errors.</p>
+    <video controls preload="none" poster="poster-factory.jpg" src="switch-models.webm"></video>
+  </div>
+  <div class="clip">
+    <h3>3 · Quota failover: swap the whole preset</h3>
+    <p>The builder's preset runs on the Antigravity subscription, whose quota is exhausted (429). The factory marks that provider spent, swaps the entire active preset to the muse preset, and the feature lands.</p>
+    <video controls preload="none" poster="poster-factory.jpg" src="quota-failover.webm"></video>
+  </div>
+  <div class="clip">
+    <h3>Full walkthrough</h3>
+    <p>The longer tour of the control room: floor, work orders, station detail, governance stop-points, run report.</p>
+    <video controls preload="none" poster="poster-factory.jpg" src="walkthrough.webm"></video>
+  </div>
+
+  <h2><span class="gear">⚙</span>How a feature flows</h2>
+  <div class="flow">
+    <div><b>1 · State it</b><span>One sentence in the dashboard (or CLI). Triage estimates size and risk and picks the lane.</span></div>
+    <div><b>2 · Plan + red-teams</b><span>A planner drafts intent, approach and success criteria; two independent red-teams attack it. Minor points are deferred to a later related task instead of bouncing the plan.</span></div>
+    <div><b>3 · Build in isolation</b><span>The builder works in its own worktree — never in your checkout — under the preset you made active.</span></div>
+    <div><b>4 · Review + verify</b><span>Two reviewers (subject-matter + coder) judge the diff against your patterns; the project's own verify command must pass.</span></div>
+    <div><b>5 · Visual approval</b><span>Pages that changed are screenshot-diffed against the base commit; you approve or request changes from Before/After/Diff before anything lands.</span></div>
+    <div><b>6 · Land + retro</b><span>The branch merges, and a retrospective files what it learned as candidate tasks for you to accept or drop.</span></div>
+  </div>
+
+  <h2 id="paths"><span class="gear">⚙</span>Ways to run it — pick where the mill stands</h2>
+  <p class="sub">The wizard only ever <em>generates</em> configuration; applying it and logging in stay yours. You don't need to own hardware.</p>
+
+  <div class="path">
+    <h3>A · Silent PC: a rented box on Hetzner (recommended)</h3>
+    <p>Spin up a 32 GB RAM VPS (e.g. a Hetzner Cloud or dedicated AX box), point the wizard at the cloud target, and the factory lives there — your laptop stays off and silent while the work is done. 32 GB comfortably funds a dozen parallel tasks plus the OS reserve; reach the control room over your VPN/tailnet or an SSH tunnel, and turn the login key (model auth) once, by hand.</p>
+    <pre>bun run wizard -- --target cloud --out ./my-env   # generates OpenTofu + factory config, never applies
+# apply on the box, start the dashboard, state tasks from anywhere</pre>
+  </div>
+  <div class="path">
+    <h3>B · A spare box at home</h3>
+    <p>An old mini-PC or retired laptop on your LAN becomes the mill floor. Run the wizard on that machine so it can tailor the config to the box itself.</p>
+    <pre>bun run wizard -- --target clean --out ./my-env</pre>
+  </div>
+  <div class="path">
+    <h3>C · Throwaway evaluation on your current machine</h3>
+    <p>An Incus container you can delete afterwards — the honest way to watch a full unattended run before committing to anything.</p>
+    <pre>bun run wizard -- --target incus --out ./my-env
+bun run demo        # offline rehearsal of the whole pipeline, planted fault included</pre>
+  </div>
+  <div class="path">
+    <h3>D · You already run NixOS</h3>
+    <p>Take the factory as a module into your existing configuration; rollback is your previous NixOS generation.</p>
+    <pre>bun run wizard -- --target existing --out ./my-env</pre>
+  </div>
+
+  <h2><span class="gear">⚙</span>Why a factory instead of just a coding agent</h2>
+  <ul class="why">
+    <li><b>Agent- and model-agnostic.</b> <span>Stations are job cards, not a vendor's chat. Organise runners as ordered presets — one family writes, another checks — and when quota or a critical failure rate fires, the factory auto-selects the next preset. Trying a new agent is a settings change, not a migration.</span></li>
+    <li><b>Workflows bigger than a prompt.</b> <span>A persisted pipeline with gates that can stop the line — plan approval, decisions conflicts, craft vetoes, screenshot approval — across sessions, restarts and parallel tasks.</span></li>
+    <li><b>Isolated from your system.</b> <span>A reproducible NixOS base the wizard only generates, per-task worktrees, rollback via git revert or a previous OS generation. Because the box is built to be thrown away, the crew inside it runs at full power, no permission prompts, no babysitting. Nothing on the machine is precious, so nothing is protected by slowing the agents down. The gates decide what leaves the box and lands in your real projects.</span></li>
+    <li><b>Context in files, not chats.</b> <span>Plans, decisions, red-team arguments, deliveries and token consumption live on disk. Kill any session; the next agent resumes from the record.</span></li>
+    <li><b>Proof, not vibes.</b> <span>Done means the project's own checks passed — 386 automated tests in the verify suite today, reproducible by cloning and running <code>bun run verify</code> — and for UI, that your eyes approved the screenshot diff. Screenshots live outside git, never committed.</span></li>
+  </ul>
+
+  <h2><span class="gear">⚙</span>Start yours</h2>
+  <pre>git clone https://github.com/Dmytroportianka/enjoy-the-silence
+cd enjoy-the-silence
+bun install
+bun run wizard -- --target incus --brain muse --out ./my-env
+bun run dashboard   # control room</pre>
+  <p class="sub">Or paste the prompt in <a href="https://github.com/Dmytroportianka/enjoy-the-silence/blob/main/START_WITH_MUSE.md">START_WITH_MUSE.md</a> into a Muse session opened in the repo and let it commission the factory — it stops at every step that must stay human.</p>
+
+  <footer>
+    ENJOY-THE-SILENCE WORKS · MILL No. 6 · A SOFTWARE FACTORY THAT STARTS ITSELF ·
+    <a href="https://github.com/Dmytroportianka/enjoy-the-silence">GITHUB.COM/DMYTROPORTIANKA/ENJOY-THE-SILENCE</a>
+  </footer>
+</main>
+</body>
+</html>
