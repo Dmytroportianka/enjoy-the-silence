@@ -1,0 +1,19 @@
+engine biome(1.0)
+language js(typescript, jsx)
+
+or {
+    TsAsExpression(expression = JsObjectExpression()) as $cast where {
+        $cast <: not or { `$_ as const`, `$_ as unknown`, `$_ as any` },
+        register_diagnostic(
+            span = $cast,
+            message = "Object literal `as` casts are forbidden — use a typed literal `const x: T = { ... }` or Zod `Schema.parse(...)` (AGENTS.md: Runtime Type Safety & Zod Enforcement)."
+        )
+    },
+    TsAsExpression(expression = JsParenthesizedExpression(expression = JsObjectExpression())) as $cast2 where {
+        $cast2 <: not or { `($_) as const`, `($_) as unknown`, `($_) as any` },
+        register_diagnostic(
+            span = $cast2,
+            message = "Object literal `as` casts are forbidden — use a typed literal `const x: T = { ... }` or Zod `Schema.parse(...)` (AGENTS.md: Runtime Type Safety & Zod Enforcement)."
+        )
+    }
+}

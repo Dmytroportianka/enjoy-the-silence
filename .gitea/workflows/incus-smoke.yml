@@ -1,0 +1,19 @@
+name: incus-smoke
+
+# Boots the wizard's generated output in a real Incus container and checks
+# the in-VM status (metrics) page, then deletes everything it created.
+# Needs a self-hosted runner with incus initialised (images: remote), bun,
+# and curl — a stock GitHub-hosted-style runner cannot run this.
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  incus-smoke:
+    runs-on: self-hosted
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Wizard incus smoke (self-cleaning)
+        run: ./scripts/incus-smoke.sh

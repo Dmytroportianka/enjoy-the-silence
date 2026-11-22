@@ -1,0 +1,88 @@
+:root {
+  --ink: #1c1917;
+  --paper: #ffffff;
+  --muted: #57534e;
+  --line: #e7e5e4;
+  --accent: #c2410c;
+  --dark: #1c1917;
+  --dark-ink: #fafaf9;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  color: var(--ink);
+  background: var(--paper);
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  line-height: 1.55;
+}
+h1, h2, h3 { font-family: Georgia, "Times New Roman", serif; font-weight: 600; line-height: 1.15; }
+h1 { font-size: clamp(2rem, 5vw, 3.4rem); margin: 0 0 1rem; max-width: 18ch; }
+h2 { font-size: 1.7rem; margin: 0 0 0.75rem; }
+h3 { font-size: 1.1rem; margin: 1.25rem 0 0.5rem; }
+main { max-width: 1080px; margin: 0 auto; padding: 0 1.25rem 3rem; }
+section { padding: 2.5rem 0 0.5rem; }
+a { color: var(--accent); }
+
+.topbar {
+  display: flex; align-items: center; gap: 1.5rem;
+  padding: 0.9rem 1.25rem; border-bottom: 1px solid var(--line);
+  position: sticky; top: 0; background: var(--paper);
+}
+.wordmark { font-family: Georgia, serif; font-weight: 700; font-size: 1.15rem; }
+.topbar nav { display: flex; gap: 1rem; }
+.topbar nav a { color: var(--ink); text-decoration: none; font-size: 0.95rem; }
+.topbar nav a:hover { color: var(--accent); }
+.badge {
+  margin-left: auto; font-size: 0.8rem; color: var(--muted);
+  border: 1px solid var(--line); padding: 0.2rem 0.6rem; border-radius: 999px;
+}
+.hero { padding-top: 3.5rem; }
+.lede { font-size: 1.15rem; color: var(--muted); max-width: 62ch; }
+.stats { display: flex; flex-wrap: wrap; gap: 2.5rem; margin: 2rem 0 0; }
+.stats dt { font-family: Georgia, serif; font-size: 2rem; }
+.stats dd { margin: 0; color: var(--muted); font-size: 0.9rem; }
+
+.loop-steps { display: flex; flex-wrap: wrap; gap: 0.5rem; list-style: none; padding: 0; margin: 1rem 0; }
+.loop-steps button {
+  font: inherit; cursor: pointer; background: none; color: var(--ink);
+  border: 1px solid var(--ink); border-radius: 4px; padding: 0.45rem 0.9rem;
+}
+.loop-steps button[aria-current="true"] { background: var(--ink); color: var(--dark-ink); }
+.loop-detail { border-top: 2px solid var(--accent); padding-top: 1rem; min-height: 7rem; max-width: 68ch; }
+.loop-detail h3 { margin-top: 0; }
+.loop-controls { display: flex; gap: 0.5rem; margin-top: 0.75rem; }
+.loop-controls button {
+  font: inherit; cursor: pointer; border: 1px solid var(--line);
+  background: var(--paper); border-radius: 4px; padding: 0.45rem 0.9rem;
+}
+.loop-controls button:hover { border-color: var(--ink); }
+
+.why-lede, .why-close { max-width: 68ch; color: var(--muted); }
+.why-lede strong { color: var(--ink); }
+.compare th:first-child { color: var(--muted); white-space: nowrap; }
+.evidence-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 2.5rem; }
+@media (max-width: 760px) { .evidence-grid { grid-template-columns: 1fr; } }
+table { border-collapse: collapse; width: 100%; font-size: 0.92rem; }
+th, td { text-align: left; padding: 0.4rem 0.5rem; border-bottom: 1px solid var(--line); }
+th { color: var(--muted); font-weight: 600; }
+.hint { font-family: system-ui, sans-serif; font-size: 0.78rem; color: var(--muted); font-weight: 400; }
+.plain-list { list-style: none; padding: 0; margin: 0.5rem 0; }
+.plain-list li { padding: 0.35rem 0; border-bottom: 1px solid var(--line); font-size: 0.95rem; }
+.plain-list code { font-size: 0.88em; }
+.planned { color: var(--muted); font-size: 0.92rem; }
+.commits { padding-left: 1.2rem; }
+.commits li { padding: 0.3rem 0; font-size: 0.95rem; }
+.commits .hash { font-family: ui-monospace, monospace; color: var(--accent); font-size: 0.85em; }
+.commits .date { color: var(--muted); font-size: 0.85em; }
+
+.demo { background: var(--dark); color: var(--dark-ink); margin: 2.5rem -1.25rem 0; padding: 2.5rem 1.25rem; }
+.demo li { margin: 0.5rem 0; max-width: 68ch; }
+.boundaries p { max-width: 68ch; color: var(--muted); }
+footer {
+  border-top: 1px solid var(--line); padding: 1rem 1.25rem;
+  display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+  color: var(--muted); font-size: 0.88rem;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .loop-detail { transition: opacity 120ms ease-in; }
+}

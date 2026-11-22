@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agent-First OS — a self-improving NixOS, shown with its own receipts</title>
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<header class="topbar">
+  <span class="wordmark">enjoy-the-silence</span>
+  <nav>
+    <a href="#loop">Loop</a>
+    <a href="#why-os">Why an OS?</a>
+    <a href="#evidence">Evidence</a>
+    <a href="#demo">Demo</a>
+    <a href="#boundaries">Boundaries</a>
+  </nav>
+  <span id="source-badge" class="badge">loading data…</span>
+</header>
+
+<main>
+  <section class="hero">
+    <h1 id="pitch-title">An operating system that improves itself — and can prove every step.</h1>
+    <p class="lede" id="pitch-tagline">NixOS is the body. The crew is the hands. Muse is the brain. This page is not a mockup:
+      every route, agent, and commit below is parsed live from the reference repository that runs the fleet,
+      or from a labeled snapshot of it.</p>
+    <dl class="stats">
+      <div><dt id="stat-routes">–</dt><dd>public routes</dd></div>
+      <div><dt id="stat-fleet">–</dt><dd>fleet agents</dd></div>
+      <div><dt id="stat-presets">–</dt><dd>agent presets</dd></div>
+      <div><dt id="stat-commits">–</dt><dd>recent commits shown</dd></div>
+    </dl>
+  </section>
+
+  <section id="loop" class="loop">
+    <h2>The self-improvement loop</h2>
+    <p>Step through the cycle the fleet already runs. Each stage names the real component that performs it.</p>
+    <ol class="loop-steps" id="loop-steps"></ol>
+    <div class="loop-detail" id="loop-detail" aria-live="polite"></div>
+    <div class="loop-controls">
+      <button type="button" id="loop-prev">Previous</button>
+      <button type="button" id="loop-next">Next stage</button>
+    </div>
+  </section>
+
+  <section id="why-os">
+    <h2>Why an OS? Why not just Muse, or just Muse?</h2>
+    <p class="why-lede">A model is a brain in a jar. Muse is an excellent pair of hands — rented, session by
+      session, on a machine someone else prepared. Neither is a place. An agent that only visits can suggest;
+      an agent that <strong>lives somewhere it owns</strong> can perceive, act, be checked, and be rolled back.
+      The OS is what turns a smart guest into a resident.</p>
+    <table class="compare">
+      <thead><tr><th></th><th>Just Muse / Muse</th><th>enjoy-the-silence (this)</th></tr></thead>
+      <tbody>
+        <tr><th>Where it lives</th><td>A session on a prepared machine</td><td>Its own declarative system image</td></tr>
+        <tr><th>Enter it</th><td>Open a terminal tab, hope state survived</td><td>SSH in — tmux, services, fleet all still there</td></tr>
+        <tr><th>Run it</th><td>While you watch</td><td>Always on: timers perceive, crews listen, gates check</td></tr>
+        <tr><th>Own the hardware</th><td>Someone else's cloud, someone else's rules</td><td>Your box, your disks, your network — data never leaves home</td></tr>
+        <tr><th>When it errs</th><td>Clean up by hand</td><td>Roll back one NixOS generation</td></tr>
+        <tr><th>Memory</th><td>Context window, then amnesia</td><td>AGENTS.md law + git history, enforced by gates</td></tr>
+      </tbody>
+    </table>
+    <p class="why-close">Muse supplies the intelligence. This supplies everything intelligence needs to matter
+      in the real world: a body it can enter, a job it can run, and hardware it can call its own.</p>
+  </section>
+
+  <section id="evidence">
+    <h2>Evidence, not claims</h2>
+    <div class="evidence-grid">
+      <article>
+        <h3>Public routes <span class="hint">from Caddyfile.do</span></h3>
+        <table>
+          <thead><tr><th>Host</th><th>Path</th><th>Upstream</th></tr></thead>
+          <tbody id="routes-body"><tr><td colspan="3">Loading…</td></tr></tbody>
+        </table>
+      </article>
+      <article>
+        <h3>Agent fleet <span class="hint">probed by agent-status</span></h3>
+        <ul id="fleet-list" class="plain-list"><li>Loading…</li></ul>
+        <h3>Agent presets <span class="hint">how hands invoke brains</span></h3>
+        <ul id="presets-list" class="plain-list"><li>Loading…</li></ul>
+        <p class="planned">Planned, not yet built: a <code>muse</code> preset routing tasks to Muse Code / Muse Spark alongside these two.</p>
+      </article>
+    </div>
+    <article>
+      <h3>Recent commits <span class="hint">the loop, leaving footprints</span></h3>
+      <ol id="commits-list" class="commits"><li>Loading…</li></ol>
+    </article>
+  </section>
+
+  <section id="demo" class="demo">
+    <h2>The 3-minute demo</h2>
+    <ol>
+      <li>From the dashboard or CLI, file one work order: <em>“Upgrade yourself and prove it.”</em></li>
+      <li>The update-check timer has already noticed a new Muse release and filed the task.</li>
+      <li>The crew dispatches Muse into an isolated worktree — never the live checkout.</li>
+      <li>The agent bumps the pin, then runs the pre-push gauntlet: lint, typecheck, unit tests, a shuffled test order, containerized E2E.</li>
+      <li>NixOS builds a new generation and switches — with the previous generation one rollback away.</li>
+      <li>This page re-reads the repo and shows the new commit. The system improved itself; the receipts updated themselves.</li>
+    </ol>
+  </section>
+
+  <section id="boundaries" class="boundaries">
+    <h2>Honest boundaries</h2>
+    <p>This is an agent-<em>operated</em> NixOS, not a new kernel. The infrastructure predates the hackathon and is
+      disclosed as such; the judged artifact is the Muse-powered layer on top. Nothing on this page phones home:
+      the server only parses allowlisted fields (routes, preset commands, binary names, commit subjects) and never
+      serves raw file contents, addresses, or secrets.</p>
+  </section>
+</main>
+
+<footer>
+  <span>enjoy-the-silence showcase — standalone, restartable, no build step.</span>
+  <span id="generated-at"></span>
+</footer>
+<script src="/app.js"></script>
+</body>
+</html>

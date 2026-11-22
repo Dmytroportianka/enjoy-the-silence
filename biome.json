@@ -1,0 +1,173 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.5.11/schema.json",
+  "plugins": [
+    "plugins/no-object-literal-as-cast.grit"
+  ],
+  "files": {
+    "includes": [
+      "**/*.js",
+      "**/*.mjs",
+      "**/*.cjs",
+      "**/*.ts",
+      "**/*.mts",
+      "**/*.cts",
+      "**/*.jsx",
+      "**/*.tsx",
+      "!**/build",
+      "!**/dist",
+      "!**/test-results",
+      "!**/node_modules",
+      "!**/enjoy-the-silence-generated",
+      "!**/factory-data",
+      "!**/data/worktrees"
+    ]
+  },
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineWidth": 100,
+    "lineEnding": "lf",
+    "expand": "always"
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "double",
+      "semicolons": "always",
+      "trailingCommas": "all"
+    }
+  },
+  "linter": {
+    "rules": {
+      "preset": "recommended",
+      "a11y": "off",
+      "correctness": {
+        "useHookAtTopLevel": "off",
+        "useExhaustiveDependencies": "off",
+        "useParseIntRadix": "off"
+      },
+      "complexity": {
+        "useOptionalChain": "off",
+        "useLiteralKeys": "off",
+        "noStaticOnlyClass": "off",
+        "noThisInStatic": "off",
+        "useArrowFunction": "off",
+        "useDateNow": "off",
+        "noUselessSwitchCase": "off",
+        "noUselessUndefinedInitialization": "off",
+        "useSimplifiedLogicExpression": "off",
+        "noImplicitCoercions": "off",
+        "noExcessiveCognitiveComplexity": {
+          "level": "error",
+          "options": {
+            "maxAllowedComplexity": 15
+          }
+        },
+        "noExcessiveLinesPerFunction": {
+          "level": "error",
+          "options": {
+            "maxLines": 120,
+            "skipBlankLines": true
+          }
+        }
+      },
+      "style": {
+        "noNonNullAssertion": "off",
+        "useImportType": "off",
+        "useTemplate": "off",
+        "useNodejsImportProtocol": "off",
+        "useExponentiationOperator": "off",
+        "useNamingConvention": {
+          "level": "error",
+          "options": {
+            "strictCase": false,
+            "conventions": [
+              {
+                "selector": {
+                  "kind": "typeLike"
+                },
+                "formats": [
+                  "PascalCase"
+                ]
+              },
+              {
+                "selector": {
+                  "kind": "function"
+                },
+                "formats": [
+                  "camelCase",
+                  "PascalCase"
+                ]
+              },
+              {
+                "selector": {
+                  "kind": "functionParameter"
+                },
+                "formats": [
+                  "camelCase"
+                ]
+              },
+              {
+                "selector": {
+                  "kind": "variable"
+                },
+                "formats": [
+                  "camelCase",
+                  "PascalCase",
+                  "CONSTANT_CASE"
+                ]
+              },
+              {
+                "selector": {
+                  "kind": "const"
+                },
+                "formats": [
+                  "camelCase",
+                  "PascalCase",
+                  "CONSTANT_CASE"
+                ]
+              },
+              {
+                "selector": {
+                  "kind": "classMember"
+                },
+                "formats": [
+                  "camelCase"
+                ]
+              },
+              {
+                "selector": {
+                  "kind": "enumMember"
+                },
+                "formats": [
+                  "camelCase",
+                  "PascalCase",
+                  "CONSTANT_CASE"
+                ]
+              },
+              {
+                "match": ".*"
+              }
+            ]
+          }
+        }
+      },
+      "suspicious": {
+        "noTemplateCurlyInString": "off",
+        "noGlobalIsNan": "off",
+        "noGlobalIsFinite": "off",
+        "noArrayIndexKey": "off",
+        "useIterableCallbackReturn": "off",
+        "noImplicitAnyLet": "off",
+        "noThenProperty": "off",
+        "noDocumentCookie": "off",
+        "noAssignInExpressions": "off",
+        "noConfusingVoidType": "off",
+        "noCommentText": "off"
+      },
+      "security": {
+        "noDangerouslySetInnerHtml": "off"
+      }
+    }
+  }
+}

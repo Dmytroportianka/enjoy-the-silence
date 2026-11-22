@@ -1,0 +1,53 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  health:
+    name: Verify (types, tests, lint, suppressions)
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - name: Install
+        run: bun install --frozen-lockfile
+      - name: Configure git for factory tests
+        run: |
+          git config --global init.defaultBranch main
+          git config --global user.name "enjoy-the-silence CI"
+          git config --global user.email "ci@enjoy-the-silence.local"
+      - name: Verify — typecheck, coverage, lint, suppression audit
+        run: bun run verify
+
+  demos:
+    name: Demo health (mocked model calls, no tokens)
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - name: Install
+        run: bun install --frozen-lockfile
+      - name: Configure git for factory tests
+        run: |
+          git config --global init.defaultBranch main
+          git config --global user.name "enjoy-the-silence CI"
+          git config --global user.email "ci@enjoy-the-silence.local"
+      - name: Demo test twins (feature creation, providers + quota failover)
+        run: bun test demo/record-feature.test.ts demo/record-providers.test.ts demo/demo.test.ts demo/walkthrough.test.ts
+      - name: Providers demo — create, models, failover (no video)
+        run: bun demo/record-providers.ts --no-video
+      - name: Feature demo — full pipeline rehearsal (no video)
+        run: bun demo/record-feature.ts --no-video

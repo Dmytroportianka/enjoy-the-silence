@@ -1,0 +1,17 @@
+{
+  "generatedAt": "2026-10-21T00:00:00.000Z",
+  "source": "bundled generic snapshot (live reads take precedence when REPO_ROOT is set)",
+  "routes": [
+    { "host": "hello.example.com", "path": "/*", "upstream": "hello:8080" },
+    { "host": "git.example.com", "path": "/*", "upstream": "gitea:3000" }
+  ],
+  "presets": [
+    { "name": "muse", "command": "muse exec --json", "resume": "--session-id", "output": "muse-jsonl" },
+    { "name": "claude-code", "command": "claude -p --output-format json", "resume": "--resume", "output": "claude-json" },
+    { "name": "opencode", "command": "opencode run --format json", "resume": "--session", "output": "opencode-ndjson" }
+  ],
+  "fleet": ["muse", "orchestrator", "dashboard", "gitea"],
+  "commits": [
+    { "hash": "0000000", "date": "2026-10-21", "subject": "feat: self-starting software factory seed" }
+  ]
+}

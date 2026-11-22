@@ -1,0 +1,10 @@
+# Bun test configuration. Kept minimal: the test/coverage contract lives
+# here so `bun test` and `bun run verify` agree without CLI duplication.
+[test]
+# Coverage is measured on every run (baseline first, gate later). Text for
+# the terminal, lcov for tooling.
+coverage = true
+coverageReporter = ["text", "lcov"]
+# Gate is intentionally NOT set yet — establish the baseline, then uncomment
+# and tune. Bun fails the run (non-zero exit) when a set threshold is missed.
+#   coverageThreshold = { lines = 0.8, functions = 0.8 }

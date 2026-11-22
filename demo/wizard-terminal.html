@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Wizard — terminal</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/driver.js@1.3.1/dist/driver.css">
+  <script src="https://cdn.jsdelivr.net/npm/driver.js@1.3.1/dist/driver.js.iife.js"></script>
+  <style>
+    html, body { margin: 0; padding: 0; height: 100%; background: #1e1e2e; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .stage { display: flex; align-items: center; justify-content: center; height: 100vh; }
+    .window { width: 920px; background: #181825; border-radius: 10px; box-shadow: 0 20px 60px rgba(0,0,0,.6); overflow: hidden; border: 1px solid #313244; }
+    .titlebar { background: #313244; color: #cdd6f4; padding: 10px 14px; display: flex; align-items: center; gap: 8px; font-size: 13px; }
+    .dot { width: 12px; height: 12px; border-radius: 50%; }
+    .red { background: #f38ba8; } .yellow { background: #f9e2af; } .green { background: #a6e3a1; }
+    .title { margin-left: 8px; color: #a6adc8; }
+    .term { padding: 18px; color: #a6e3a1; font-size: 15px; line-height: 1.5; min-height: 420px; }
+    .line { white-space: pre-wrap; }
+    .prompt { color: #89b4fa; }
+    .success { color: #a6e3a1; }
+    .muted { color: #6c7086; }
+    .cursor { display: inline-block; width: 8px; background: #a6e3a1; }
+  </style>
+</head>
+<body>
+  <div class="stage">
+    <div class="window">
+      <div class="titlebar">
+        <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+        <span class="title">Terminal — wizard</span>
+      </div>
+      <div id="tour-terminal" class="term"></div>
+    </div>
+  </div>
+  <script>
+    const lines = [
+      { text: "$ bun scripts/wizard.ts", delay: 400, cls: "prompt" },
+      { text: "", delay: 400 },
+      { text: "? Target (incus/existing/clean/cloud): incus", delay: 900, cls: "line" },
+      { text: "? Hostname: agent-os-demo", delay: 900, cls: "line" },
+      { text: "? Username: agent", delay: 900, cls: "line" },
+      { text: "? Brain (muse/claude-code/opencode/hermes): muse", delay: 900, cls: "line" },
+      { text: "? Entry (cli): cli", delay: 900, cls: "line" },
+      { text: "? Status page: yes", delay: 700, cls: "line" },
+      { text: "? Gitea: yes", delay: 700, cls: "line" },
+      { text: "? Dashboard: yes", delay: 700, cls: "line" },
+      { text: "", delay: 500 },
+      { text: "Generating NixOS configuration…", delay: 1200, cls: "muted" },
+      { text: "  ✓ /etc/nixos/configuration.nix", delay: 600, cls: "success" },
+      { text: "  ✓ /etc/nixos/hardware-configuration.nix", delay: 600, cls: "success" },
+      { text: "  ✓ factory-data/settings.json", delay: 600, cls: "success" },
+      { text: "  ✓ README.md (builds before any switch)", delay: 600, cls: "success" },
+      { text: "", delay: 500 },
+      { text: "Next: review the generated files, then:", delay: 800, cls: "line" },
+      { text: "  nixos-rebuild switch", delay: 600, cls: "prompt" },
+      { text: "", delay: 400 },
+      { text: "Done. The factory is configured; boot it to start Gitea, the dashboard, and the worktree pool.", delay: 1000, cls: "success" },
+    ];
+    const term = document.getElementById("tour-terminal");
+    let acc = 0;
+    let active = null;
+    const showTip = (title, desc) => {
+      try { active?.destroy?.(); } catch {}
+      const d = window.driver.js.driver({ allowClose: true, overlayOpacity: 0, animate: false });
+      d.highlight({ element: "#tour-terminal", popover: { title, description: desc, side: "right", align: "start" } });
+      active = d;
+    };
+    const clearTip = () => { try { active?.destroy?.(); } catch {} active = null; };
+    window.showTip = showTip;
+    window.clearTip = clearTip;
+    lines.forEach((l, i) => {
+      acc += l.delay;
+      setTimeout(() => {
+        const div = document.createElement("div");
+        div.className = "line " + (l.cls || "");
+        div.textContent = l.text;
+        term.appendChild(div);
+        term.scrollTop = term.scrollHeight;
+      }, acc);
+    });
+    // Tooltip schedule aligned with the script, explaining each choice.
+    setTimeout(() => showTip("Wizard", "Runs in your shell and asks a few questions to generate a reproducible NixOS config. Nothing is applied until you review and run nixos-rebuild switch."), 500);
+    setTimeout(() => showTip("Target", "Where the factory runs: incus (local container, default), existing (your machine), clean (fresh VM), or cloud (Hetzner/DigitalOcean)."), 1700);
+    setTimeout(() => showTip("Identity", "Hostname names the machine; username is the primary account the factory runs as."), 2600);
+    setTimeout(() => showTip("Brain", "The coding agent: muse (Meta, default), claude-code, opencode, or hermes. Pick the one you have credentials for."), 4400);
+    setTimeout(() => showTip("Entry", "Entry point: cli (command line). The only supported entry today."), 5300);
+    setTimeout(() => showTip("Features", "Toggle status page (public health page), Gitea (self-hosted git), and the dashboard (control room)."), 6000);
+    setTimeout(() => showTip("Generating", "Writes configuration.nix, hardware config, settings.json, and a README that builds before any switch."), 9100);
+    setTimeout(() => showTip("Done", "Review the generated files, then run nixos-rebuild switch. The wizard never applies changes itself."), 13000);
+    setTimeout(() => clearTip(), 17000);
+  </script>
+</body>
+</html>

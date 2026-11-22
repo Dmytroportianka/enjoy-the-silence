@@ -1,0 +1,58 @@
+{
+  "name": "enjoy-the-silence",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "A software factory that starts itself: reproducible base, self-hosted Gitea, a governed Muse crew, and a control-room dashboard.",
+  "scripts": {
+    "start": "bun server.ts",
+    "dashboard": "bun run build:ui && bun dashboard/server.ts",
+    "build:ui": "vite build --config dashboard/vite.config.ts",
+    "dev:ui": "vite build --watch --config dashboard/vite.config.ts",
+    "dev": "bun run build:ui && DASHBOARD_HOST=${DASHBOARD_HOST:-0.0.0.0} bun --watch dashboard/server.ts",
+    "server:dev": "DASHBOARD_HOST=${DASHBOARD_HOST:-0.0.0.0} bun --watch dashboard/server.ts",
+    "crew": "bun src/crew/cli.ts",
+    "demo": "bun demo/run-demo.ts",
+    "test": "bun test",
+    "coverage": "bun test --coverage --coverage-reporter=text --coverage-reporter=lcov",
+    "lint": "biome lint . && eslint .",
+    "lint:biome": "biome lint . --write",
+    "check": "biome check . && eslint .",
+    "fix": "biome check --write .",
+    "typecheck": "bun x tsc --noEmit",
+    "verify": "bun install --frozen-lockfile && bun run typecheck && bun run coverage && bun run check && bun scripts/suppressions.ts --audit",
+    "snapshot": "bun scripts/gen-snapshot.ts",
+    "wizard": "bun scripts/wizard.ts",
+    "record-feature": "bun demo/record-feature.ts",
+    "health": "bun scripts/health.ts",
+    "smoke:incus": "bash scripts/incus-smoke.sh",
+    "record-providers": "bun demo/record-providers.ts",
+    "badges": "bun scripts/gen-badges.ts"
+  },
+  "dependencies": {
+    "driver.js": "^1.10.2",
+    "lucide-react": "^1.61.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "react-router": "^8.5.0",
+    "zod": "^3.25.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.5.11",
+    "@tailwindcss/vite": "^4.3.3",
+    "@types/bun": "^1.2.0",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.1.2",
+    "eslint": "10.7.0",
+    "jiti": "2.7.0",
+    "playwright": "^1.64.1",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^5.8.0",
+    "typescript-eslint": "8.64.0",
+    "vite": "^8.3.5"
+  },
+  "engines": {
+    "bun": ">=1.1.0"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "$comment": "Copy to .muse/settings.json. Gates are global/constitutional: per-repo config may tune thresholds, never disable a gate.",
+  "hooks": {
+    "PreToolUse": [
+      { "matcher": "Write|Edit", "hooks": [{ "type": "command", "command": "bun governance/hooks/plan-mode.ts" }] }
+    ],
+    "UserPromptSubmit": [
+      { "hooks": [{ "type": "command", "command": "bun governance/hooks/clarification.ts" }] },
+      { "hooks": [{ "type": "command", "command": "bun governance/hooks/redteam.ts" }] }
+    ]
+  }
+}

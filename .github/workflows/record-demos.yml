@@ -1,0 +1,70 @@
+name: Record demos
+
+# Films the demo clips with Playwright (mocked model calls — no tokens)
+# and saves them as build artifacts. The GitHub Pages site links here for
+# the always-current recordings; the copies embedded on the site itself
+# are refreshed from these artifacts when the UI changes materially.
+on:
+  push:
+    branches: [main]
+    paths:
+      - "dashboard/**"
+      - "demo/**"
+      - "src/**"
+      - "site/**"
+      - ".github/workflows/record-demos.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  record:
+    name: Record demo videos (Playwright)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - name: Install
+        run: bun install --frozen-lockfile
+      - name: Configure git for factory tests
+        run: |
+          git config --global init.defaultBranch main
+          git config --global user.name "enjoy-the-silence CI"
+          git config --global user.email "ci@enjoy-the-silence.local"
+      - name: Stub agent CLIs for provider detection
+        # The demo mocks every model call; the Settings picker only needs
+        # the binaries to exist on PATH to offer their presets.
+        run: |
+          mkdir -p "$HOME/.local/bin"
+          for cli in muse agy gemini; do printf '#!/bin/sh\nexit 0\n' > "$HOME/.local/bin/$cli"; chmod +x "$HOME/.local/bin/$cli"; done
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+      - name: Install Chromium for Playwright
+        run: bunx playwright install --with-deps chromium
+      - name: Record the three provider clips
+        run: bun demo/record-providers.ts
+      - name: Show what was filmed
+        run: |
+          for f in demo/recordings/create-feature.webm demo/recordings/switch-models.webm demo/recordings/quota-failover.webm; do
+            test -s "$f" && echo "$f $(du -h "$f" | cut -f1)"
+          done
+      - name: Upload failure screenshots
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: record-failure-screenshots
+          path: /tmp/record-fail-*.png
+          if-no-files-found: ignore
+      - name: Upload demo recordings
+        uses: actions/upload-artifact@v4
+        with:
+          name: demo-recordings
+          path: |
+            demo/recordings/create-feature.webm
+            demo/recordings/switch-models.webm
+            demo/recordings/quota-failover.webm
+          retention-days: 90
+          if-no-files-found: error
